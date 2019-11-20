@@ -10,6 +10,7 @@ from geometry_msgs.msg import PoseStamped
 from sensor_msgs.msg import LaserScan
 import sys, time
 import numpy as np
+import os
 # from scipy.ndimage import filters
 import cv2
 import roslib
@@ -27,7 +28,7 @@ from matplotlib import pyplot as plt
 
 bridge = CvBridge()
 
-referenceImg = cv2.imread('/home/apollo/catkin_ws/src/CSE468_PA4/target.png',0)
+referenceImg = cv2.imread('/home/apollo/catkin_ws/src/CSE468_PA4/target2.png',0)
 # cv2.imshow('img0', referenceImg)
 # cv2.waitKey(0)
 isFound = False
@@ -35,22 +36,36 @@ count = 0
 
 
 def callback(data):
-    global referenceImg, count
-    cv_image = bridge.imgmsg_to_cv2(data, "bgr8")
+    global referenceImg, count, isFound
+    if not isFound:
+        cv_image = bridge.imgmsg_to_cv2(data, "bgr8")
+        img_gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
 
-    surf = cv2.xfeatures2d.SURF_create(400)
-    kp1,des1 = surf.detectAndCompute(cv_image,None)
-    kp2,des2 = surf.detectAndCompute(referenceImg,None)
 
-    bf = cv2.BFMatcher(cv2.NORM_L1,crossCheck=False)
-    matches = bf.knnMatch(des1,des2,k=2)
+        img1 = img_gray          # queryImage
+        img2 = referenceImg # trainImage
+        # Initiate SIFT detector
+        sift = cv2.xfeatures2d.SIFT_create()
+        # find the keypoints and descriptors with SIFT
+        kp1, des1 = sift.detectAndCompute(img1,None)
+        kp2, des2 = sift.detectAndCompute(img2,None)
+        # BFMatcher with default params
+        bf = cv2.BFMatcher()
+        matches = bf.knnMatch(des1,des2,k=2)
+        # Apply ratio test
+        good = []
+        for m,n in matches:
+            if m.distance < 0.9*n.distance:
+                good.append([m])
+        # cv.drawMatchesKnn expects list of lists as matches.
+        img3 = cv2.drawMatchesKnn(img1,kp1,img2,kp2,good,None,flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
 
-    good = []
-    for m,n in matches:
-        if m.distance < 0.75*n.distance:
-            good.append([m])
+        print(len(good))
 
-    print(len(good))
+        if len(good) > 60:
+            isFound = True
+            # os.system("rosnode kill /turtlebot_teleop_keyboard")
+            plt.imshow(img3),plt.show()
 
         
 def listener():

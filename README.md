@@ -8,5 +8,8 @@ http://wiki.ros.org/cv_bridge/Tutorials/ConvertingBetweenROSImagesAndOpenCVImage
 http://wiki.ros.org/rospy_tutorials/Tutorials/WritingImagePublisherSubscriber
 https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_template_matching/py_template_matching.html
 https://answers.ros.org/question/194113/how-can-i-see-the-camera-and-laser-view-in-gazebo/
+https://docs.opencv.org/3.4/dc/dc3/tutorial_py_matcher.html
+https://pysource.com/2018/03/23/feature-matching-brute-force-opencv-3-4-with-python-3-tutorial-26/
+
 
 
