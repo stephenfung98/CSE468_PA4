@@ -29,6 +29,9 @@ from matplotlib import pyplot as plt
 bridge = CvBridge()
 
 referenceImg = cv2.imread('/home/apollo/catkin_ws/src/CSE468_PA4/target2.png',0)
+referenceImg1 = cv2.imread('/home/apollo/catkin_ws/src/CSE468_PA4/target3.png',0)
+referenceImg2 = cv2.imread('/home/apollo/catkin_ws/src/CSE468_PA4/target4.png',0)
+
 # cv2.imshow('img0', referenceImg)
 # cv2.waitKey(0)
 isFound = False
@@ -62,7 +65,7 @@ def callback(data):
 
         print(len(good))
 
-        if len(good) > 60:
+        if len(good) >= 60:
             isFound = True
             # os.system("rosnode kill /turtlebot_teleop_keyboard")
             plt.imshow(img3),plt.show()
