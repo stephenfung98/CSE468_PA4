@@ -43,4 +43,7 @@ https://www.pyimagesearch.com/2018/11/12/yolo-object-detection-with-opencv/
 https://github.com/pjreddie/darknet/blob/master/data/coco.names
 - Pretrained models for YOLO matching
 
+https://bitbucket.org/osrf/citysim/src/default/
+- The world file being used
+
 
