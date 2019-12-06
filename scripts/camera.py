@@ -28,14 +28,9 @@ import os
 
 bridge = CvBridge()
 
-referenceImg = cv2.imread('/home/apollo/catkin_ws/src/CSE468_PA4/b.jpg',0)
-referenceImg1 = cv2.imread('/home/apollo/catkin_ws/src/CSE468_PA4/target3.png',0)
-referenceImg2 = cv2.imread('/home/apollo/catkin_ws/src/CSE468_PA4/target4.png',0)
 model = '/home/apollo/catkin_ws/src/CSE468_PA4/weights/yolov3.weights'
 config = '/home/apollo/catkin_ws/src/CSE468_PA4/cfg/yolov3.cfg'
 
-# cv2.imshow('img0', referenceImg)
-# cv2.waitKey(0)
 isFound = False
 count = 0
 net = 0
@@ -89,11 +84,12 @@ def callback(data):
 
         for i in range(len(boxes)):
             if i in indexes:
-                # color = colors[class_ids[i]]
-                # cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-                print(i)
                 print(str(classes[class_ids[i]]))
-                print(confidences[i])
+                print("found with " + str(confidences[i]) + " probability")
+                if class_ids[i] == 11:
+                    print("STOPPING ROBOT. Stop Sign found with " + str(confidences[i]) + " probability")
+                    os.system("rosnode kill /turtlebot_teleop_keyboard")
+
     print("loop")
 
         
@@ -106,6 +102,8 @@ def listener():
     layer_names = net.getLayerNames()
     output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
     colors = np.random.uniform(0, 255, size=(len(classes), 3))
+
+    print("finished loading weights")
 
     rospy.init_node('yInt', anonymous=True)
 
