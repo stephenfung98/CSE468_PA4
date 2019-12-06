@@ -1,0 +1,31 @@
+<?xml version="1.0"?> 
+<gazebo version="1.0">
+<world name="default">
+
+	<include>
+		<uri>model://ground_plane</uri>
+	</include>
+
+	<include>
+		<uri>model://stop_sign</uri>
+		<pose>2 2 0 0 0 0</pose>
+	</include>
+
+	<include>
+		<uri>model://postbox</uri>
+		<pose>-2 2 0 0 0 0</pose>
+	</include>
+
+	<include>
+		<uri>model://bookshelf</uri>
+		<pose>2 -2 0 0 0 0</pose>
+	</include>
+
+	<include>
+		<uri>model://table</uri>
+		<pose>-2 -2 0 0 0 0</pose>
+	</include>
+
+  </world>
+</gazebo>
+
